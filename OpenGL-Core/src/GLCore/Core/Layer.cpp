@@ -4,7 +4,7 @@
 namespace GLCore {
 
 	Layer::Layer(const std::string& debugName)
-		: m_DebugName(debugName)
+		: m_debugName(debugName)
 	{
 	}
 	

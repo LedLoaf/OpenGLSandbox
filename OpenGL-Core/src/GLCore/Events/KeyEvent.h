@@ -7,28 +7,28 @@ namespace GLCore {
 	class KeyEvent : public Event
 	{
 	public:
-		inline int GetKeyCode() const { return m_KeyCode; }
+		inline int getKeyCode() const { return m_keyCode; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 	protected:
-		KeyEvent(int keycode)
-			: m_KeyCode(keycode) {}
+		explicit KeyEvent(int keycode)
+			: m_keyCode(keycode) {}
 
-		int m_KeyCode;
+		int m_keyCode;
 	};
 
-	class KeyPressedEvent : public KeyEvent
+	class KeyPressedEvent final : public KeyEvent
 	{
 	public:
 		KeyPressedEvent(int keycode, int repeatCount)
 			: KeyEvent(keycode), m_RepeatCount(repeatCount) {}
 
-		inline int GetRepeatCount() const { return m_RepeatCount; }
+		inline int getRepeatCount() const { return m_RepeatCount; }
 
-		std::string ToString() const override
+		std::string toString() const override
 		{
 			std::stringstream ss;
-			ss << "KeyPressedEvent: " << m_KeyCode << " (" << m_RepeatCount << " repeats)";
+			ss << "KeyPressedEvent: " << m_keyCode << " (" << m_RepeatCount << " repeats)";
 			return ss.str();
 		}
 
@@ -37,32 +37,32 @@ namespace GLCore {
 		int m_RepeatCount;
 	};
 
-	class KeyReleasedEvent : public KeyEvent
+	class KeyReleasedEvent final : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(int keycode)
 			: KeyEvent(keycode) {}
 
-		std::string ToString() const override
+		std::string toString() const override
 		{
 			std::stringstream ss;
-			ss << "KeyReleasedEvent: " << m_KeyCode;
+			ss << "KeyReleasedEvent: " << m_keyCode;
 			return ss.str();
 		}
 
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
 
-	class KeyTypedEvent : public KeyEvent
+	class KeyTypedEvent final : public KeyEvent
 	{
 	public:
 		KeyTypedEvent(int keycode)
 			: KeyEvent(keycode) {}
 
-		std::string ToString() const override
+		std::string toString() const override
 		{
 			std::stringstream ss;
-			ss << "KeyTypedEvent: " << m_KeyCode;
+			ss << "KeyTypedEvent: " << m_keyCode;
 			return ss.str();
 		}
 

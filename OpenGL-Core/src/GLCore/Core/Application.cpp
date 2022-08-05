@@ -11,74 +11,74 @@ namespace GLCore {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
-	Application* Application::s_Instance = nullptr;
+	Application* Application::s_instance = nullptr;
 
 	Application::Application(const std::string& name, uint32_t width, uint32_t height)
 	{
-		if (!s_Instance)
+		if (!s_instance)
 		{
 			// Initialize core
-			Log::Init();
+			Log::init();
 		}
 
-		GLCORE_ASSERT(!s_Instance, "Application already exists!");
-		s_Instance = this;
+		GLCORE_ASSERT(!s_instance, "Application already exists!");
+		s_instance = this;
 
-		m_Window = std::unique_ptr<Window>(Window::Create({ name, width, height }));
-		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+		m_window = std::unique_ptr<Window>(Window::create({ name, width, height }));
+		m_window->setEventCallback(BIND_EVENT_FN(onEvent));
 
 		// Renderer::Init();
 
-		m_ImGuiLayer = new ImGuiLayer();
-		PushOverlay(m_ImGuiLayer);
+		m_imGuiLayer = new ImGuiLayer();
+		pushOverlay(m_imGuiLayer);
 	}
 
-	void Application::PushLayer(Layer* layer)
+	void Application::pushLayer(Layer* layer)
 	{
-		m_LayerStack.PushLayer(layer);
+		m_layerStack.pushLayer(layer);
 	}
 
-	void Application::PushOverlay(Layer* layer)
+	void Application::pushOverlay(Layer* layer)
 	{
-		m_LayerStack.PushOverlay(layer);
+		m_layerStack.pushOverlay(layer);
 	}
 
-	void Application::OnEvent(Event& e)
+	void Application::onEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+		dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT_FN(onWindowClose));
 
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
+		for (auto it = m_layerStack.end(); it != m_layerStack.begin(); )
 		{
-			(*--it)->OnEvent(e);
-			if (e.Handled)
+			(*--it)->onEvent(e);
+			if (e.handled)
 				break;
 		}
 	}
 
-	void Application::Run()
+	void Application::run()
 	{
-		while (m_Running)
+		while (m_running)
 		{
-			float time = (float)glfwGetTime();
-			Timestep timestep = time - m_LastFrameTime;
-			m_LastFrameTime = time;
+			float    time     = static_cast<float>(glfwGetTime());
+			Timestep timestep = time - m_lastFrameTime;
+			m_lastFrameTime   = time;
 
-			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate(timestep);
+			for (Layer* layer : m_layerStack)
+				layer->onUpdate(timestep);
 
-			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender();
-			m_ImGuiLayer->End();
+			m_imGuiLayer->begin();
+			for (Layer* layer : m_layerStack)
+				layer->onImGuiRender();
+			m_imGuiLayer->end();
 
-			m_Window->OnUpdate();
+			m_window->onUpdate();
 		}
 	}
 
-	bool Application::OnWindowClose(WindowCloseEvent& e)
+	bool Application::onWindowClose(WindowCloseEvent& e)
 	{
-		m_Running = false;
+		m_running = false;
 		return true;
 	}
 

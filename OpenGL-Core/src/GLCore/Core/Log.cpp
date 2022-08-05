@@ -5,13 +5,13 @@
 
 namespace GLCore {
 
-	std::shared_ptr<spdlog::logger> Log::s_Logger;
+	std::shared_ptr<spdlog::logger> Log::s_logger;
 
-	void Log::Init()
+	void Log::init()
 	{
 		spdlog::set_pattern("%^[%T] %n: %v%$");
-		s_Logger = spdlog::stdout_color_mt("GLCORE");
-		s_Logger->set_level(spdlog::level::trace);
+		s_logger = spdlog::stdout_color_mt("GLCORE");
+		s_logger->set_level(spdlog::level::trace);
 	}
 
 }

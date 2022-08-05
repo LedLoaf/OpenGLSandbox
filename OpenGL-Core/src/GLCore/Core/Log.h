@@ -9,18 +9,18 @@ namespace GLCore {
 	class Log
 	{
 	public:
-		static void Init();
+		static void init();
 
-		inline static std::shared_ptr<spdlog::logger>& GetLogger() { return s_Logger; }
+		inline static std::shared_ptr<spdlog::logger>& getLogger() { return s_logger; }
 	private:
-		static std::shared_ptr<spdlog::logger> s_Logger;
+		static std::shared_ptr<spdlog::logger> s_logger;
 	};
 
 }
 
 // Client log macros
-#define LOG_TRACE(...)         ::GLCore::Log::GetLogger()->trace(__VA_ARGS__)
-#define LOG_INFO(...)          ::GLCore::Log::GetLogger()->info(__VA_ARGS__)
-#define LOG_WARN(...)          ::GLCore::Log::GetLogger()->warn(__VA_ARGS__)
-#define LOG_ERROR(...)         ::GLCore::Log::GetLogger()->error(__VA_ARGS__)
-#define LOG_CRITICAL(...)      ::GLCore::Log::GetLogger()->critical(__VA_ARGS__)
+#define LOG_TRACE(...)         ::GLCore::Log::getLogger()->trace(__VA_ARGS__)
+#define LOG_INFO(...)          ::GLCore::Log::getLogger()->info(__VA_ARGS__)
+#define LOG_WARN(...)          ::GLCore::Log::getLogger()->warn(__VA_ARGS__)
+#define LOG_ERROR(...)         ::GLCore::Log::getLogger()->error(__VA_ARGS__)
+#define LOG_CRITICAL(...)      ::GLCore::Log::getLogger()->critical(__VA_ARGS__)

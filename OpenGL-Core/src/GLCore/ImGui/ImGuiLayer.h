@@ -12,18 +12,18 @@ namespace GLCore {
 	{
 	public:
 		ImGuiLayer();
-		~ImGuiLayer() = default;
+		~ImGuiLayer() override = default;
 
-		virtual void OnAttach() override;
-		virtual void OnDetach() override;
+		virtual void onAttach() override;
+		virtual void onDetach() override;
 
-		void Begin();
-		void End();
+		void begin();
+		void end();
 
-		virtual void ImGuiLayer::OnEvent(Event& event);
-		bool ImGuiLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e);
+		void onEvent(Event& event) override;
+		bool onMouseButtonPressed(MouseButtonPressedEvent& e);
 	private:
-		float m_Time = 0.0f;
+		float m_time = 0.0f;
 	};
 
 }

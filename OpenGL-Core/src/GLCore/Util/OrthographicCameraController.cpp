@@ -7,73 +7,73 @@
 namespace GLCore::Utils {
 
 	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation)
-		: m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
+		: m_aspectRatio(aspectRatio), m_camera(-m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel, -m_zoomLevel, m_zoomLevel), m_rotation(rotation)
 	{
 	}
 
-	void OrthographicCameraController::OnUpdate(Timestep ts)
+	void OrthographicCameraController::onUpdate(Timestep ts)
 	{
-		if (Input::IsKeyPressed(HZ_KEY_A))
+		if (Input::isKeyPressed(HZ_KEY_A))
 		{
-			m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-			m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
+			m_cameraPosition.x -= cos(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
+			m_cameraPosition.y -= sin(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
 		}
-		else if (Input::IsKeyPressed(HZ_KEY_D))
+		else if (Input::isKeyPressed(HZ_KEY_D))
 		{
-			m_CameraPosition.x += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-			m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-		}
-
-		if (Input::IsKeyPressed(HZ_KEY_W))
-		{
-			m_CameraPosition.x += -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-			m_CameraPosition.y += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-		}
-		else if (Input::IsKeyPressed(HZ_KEY_S))
-		{
-			m_CameraPosition.x -= -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
-			m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * ts;
+			m_cameraPosition.x += cos(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
+			m_cameraPosition.y += sin(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
 		}
 
-		if (m_Rotation)
+		if (Input::isKeyPressed(HZ_KEY_W))
 		{
-			if (Input::IsKeyPressed(HZ_KEY_Q))
-				m_CameraRotation += m_CameraRotationSpeed * ts;
-			if (Input::IsKeyPressed(HZ_KEY_E))
-				m_CameraRotation -= m_CameraRotationSpeed * ts;
-
-			if (m_CameraRotation > 180.0f)
-				m_CameraRotation -= 360.0f;
-			else if (m_CameraRotation <= -180.0f)
-				m_CameraRotation += 360.0f;
-
-			m_Camera.SetRotation(m_CameraRotation);
+			m_cameraPosition.x += -sin(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
+			m_cameraPosition.y += cos(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
+		}
+		else if (Input::isKeyPressed(HZ_KEY_S))
+		{
+			m_cameraPosition.x -= -sin(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
+			m_cameraPosition.y -= cos(glm::radians(m_cameraRotation)) * m_cameraTranslationSpeed * ts;
 		}
 
-		m_Camera.SetPosition(m_CameraPosition);
+		if (m_rotation)
+		{
+			if (Input::isKeyPressed(HZ_KEY_Q))
+				m_cameraRotation += m_CameraRotationSpeed * ts;
+			if (Input::isKeyPressed(HZ_KEY_E))
+				m_cameraRotation -= m_CameraRotationSpeed * ts;
 
-		m_CameraTranslationSpeed = m_ZoomLevel;
+			if (m_cameraRotation > 180.0f)
+				m_cameraRotation -= 360.0f;
+			else if (m_cameraRotation <= -180.0f)
+				m_cameraRotation += 360.0f;
+
+			m_camera.setRotation(m_cameraRotation);
+		}
+
+		m_camera.setPosition(m_cameraPosition);
+
+		m_cameraTranslationSpeed = m_zoomLevel;
 	}
 
-	void OrthographicCameraController::OnEvent(Event& e)
+	void OrthographicCameraController::onEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<MouseScrolledEvent>(GLCORE_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
-		dispatcher.Dispatch<WindowResizeEvent>(GLCORE_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
+		dispatcher.dispatch<MouseScrolledEvent>(GLCORE_BIND_EVENT_FN(OrthographicCameraController::onMouseScrolled));
+		dispatcher.dispatch<WindowResizeEvent>(GLCORE_BIND_EVENT_FN(OrthographicCameraController::onWindowResized));
 	}
 
-	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
+	bool OrthographicCameraController::onMouseScrolled(MouseScrolledEvent& e)
 	{
-		m_ZoomLevel -= e.GetYOffset() * 0.25f;
-		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		m_zoomLevel -= e.getYOffset() * 0.25f;
+		m_zoomLevel = std::max(m_zoomLevel, 0.25f);
+		m_camera.setProjection(-m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel, -m_zoomLevel, m_zoomLevel);
 		return false;
 	}
 
-	bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& e)
+	bool OrthographicCameraController::onWindowResized(WindowResizeEvent& e)
 	{
-		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		m_aspectRatio = (float)e.getWidth() / (float)e.getHeight();
+		m_camera.setProjection(-m_aspectRatio * m_zoomLevel, m_aspectRatio * m_zoomLevel, -m_zoomLevel, m_zoomLevel);
 		return false;
 	}
 

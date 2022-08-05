@@ -3,37 +3,29 @@
 using namespace GLCore;
 using namespace GLCore::Utils;
 
-SandboxLayer::SandboxLayer()
+void SandboxLayer::onAttach()
 {
-}
-
-SandboxLayer::~SandboxLayer()
-{
-}
-
-void SandboxLayer::OnAttach()
-{
-	EnableGLDebugging();
+	enableGLDebugging();
 
 	// Init here
 }
 
-void SandboxLayer::OnDetach()
+void SandboxLayer::onDetach()
 {
 	// Shutdown here
 }
 
-void SandboxLayer::OnEvent(Event& event)
+void SandboxLayer::onEvent(Event& event)
 {
 	// Events here
 }
 
-void SandboxLayer::OnUpdate(Timestep ts)
+void SandboxLayer::onUpdate(Timestep ts)
 {
 	// Render here
 }
 
-void SandboxLayer::OnImGuiRender()
+void SandboxLayer::onImGuiRender()
 {
 	// ImGui here
 }

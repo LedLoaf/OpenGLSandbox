@@ -6,13 +6,12 @@
 class SandboxLayer : public GLCore::Layer
 {
 public:
-	SandboxLayer();
-	virtual ~SandboxLayer();
+	SandboxLayer() = default;
 
-	virtual void OnAttach() override;
-	virtual void OnDetach() override;
-	virtual void OnEvent(GLCore::Event& event) override;
-	virtual void OnUpdate(GLCore::Timestep ts) override;
-	virtual void OnImGuiRender() override;
+	virtual void onAttach() override;
+	virtual void onDetach() override;
+	virtual void onEvent(GLCore::Event& event) override;
+	virtual void onUpdate(GLCore::Timestep ts) override;
+	virtual void onImGuiRender() override;
 private:
 };

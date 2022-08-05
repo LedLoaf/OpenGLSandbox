@@ -27,10 +27,10 @@ namespace GLCore::Utils {
 
 	Shader::~Shader()
 	{
-		glDeleteProgram(m_RendererID);
+		glDeleteProgram(m_rendererID);
 	}
 
-	GLuint Shader::CompileShader(GLenum type, const std::string& source)
+	GLuint Shader::compileShader(GLenum type, const std::string& source)
 	{
 		GLuint shader = glCreateShader(type);
 
@@ -58,14 +58,14 @@ namespace GLCore::Utils {
 		return shader;
 	}
 
-	Shader* Shader::FromGLSLTextFiles(const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
+	Shader* Shader::fromGlslTextFiles(const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
 	{
 		Shader* shader = new Shader();
-		shader->LoadFromGLSLTextFiles(vertexShaderPath, fragmentShaderPath);
+		shader->loadFromGlslTextFiles(vertexShaderPath, fragmentShaderPath);
 		return shader;
 	}
 	
-	void Shader::LoadFromGLSLTextFiles(const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
+	void Shader::loadFromGlslTextFiles(const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
 	{
 		std::string vertexSource = ReadFileAsString(vertexShaderPath);
 		std::string fragmentSource = ReadFileAsString(fragmentShaderPath);
@@ -73,9 +73,9 @@ namespace GLCore::Utils {
 		GLuint program = glCreateProgram();
 		int glShaderIDIndex = 0;
 			
-		GLuint vertexShader = CompileShader(GL_VERTEX_SHADER, vertexSource);
+		GLuint vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
 		glAttachShader(program, vertexShader);
-		GLuint fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentSource);
+		GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
 		glAttachShader(program, fragmentShader);
 
 		glLinkProgram(program);
@@ -104,7 +104,7 @@ namespace GLCore::Utils {
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
 
-		m_RendererID = program;
+		m_rendererID = program;
 	}
 
 }

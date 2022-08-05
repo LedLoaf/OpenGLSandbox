@@ -1,7 +1,7 @@
 project "OpenGL-Core"
 	kind "StaticLib"
 	language "C++"
-	cppdialect "C++17"
+	cppdialect "C++20"
 	staticruntime "on"
 
 	targetdir ("../bin/" .. outputdir .. "/%{prj.name}")
@@ -36,8 +36,8 @@ project "OpenGL-Core"
 		"%{IncludeDir.stb_image}"
 	}
 
-	links 
-	{ 
+	links
+	{
 		"GLFW",
 		"Glad",
 		"ImGui",
